@@ -299,7 +299,7 @@ public class SwingRunner extends AntRunner implements Runner, PageCompletionList
 		int x = (int) config.getBounds().getCenterX() - (SizeConstants.PAGE_WIDTH / 2);
 		int y = (int) config.getBounds().getCenterY() - (SizeConstants.PAGE_HEIGHT / 2);
 		frame.setLocation(x, y);
-		frame.setResizable(false);
+		frame.setResizable(true);
 	}
 
 	private void setIcon(JFrame frame, Installer installer) {
