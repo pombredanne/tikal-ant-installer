@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!--
+
+This Ant script is used to package parts of the demo app to create an installer
+
+the nonextract target shows an example of creating a self extracting jar for the demo app
+
+run with ...
+
+ant -buildfile build-demo.xml
+
+-->
+<project name="Create Demo Installer for Release Notes Extension"  default="nonextract"  basedir=".">
+
+    <!-- Default location in installed tree -->
+    <property name="installDir" location="../../../.."/>
+
+    <path id="taskdef.cp">
+        <fileset dir="${installDir}/lib">
+			<include name="ant-installer-ext.jar"/>
+            <include name="ant-installer.jar"/>
+        </fileset>
+	</path>
+	
+	<taskdef
+			name="installer" 
+			classname="org.tp23.antinstaller.taskdefs.Installer"
+			classpathref="taskdef.cp"/>
+	<property name="demo.dir" value="${installDir}/demo"/>
+	
+
+
+	<target name="nonextract">
+		<mkdir dir="../artifacts/nonextract"/>
+		<!--unjar dest="./nonextract">
+			<fileset dir="installlib">
+				<include name="*.jar">
+				</include>
+			</fileset>
+		</unjar-->
+		<copy todir="../artifacts/nonextract" overwrite="true">
+			<fileset dir="${demo.dir}/installclasspath">
+				<include name="resources/*"/>
+			</fileset>
+		</copy>
+		<copy todir="../artifacts/nonextract" overwrite="true">
+			<fileset dir="../installer/">
+				<include name="build.xml"/>
+				<include name="antinstall-config.xml"/>
+				<include name="release-notes.txt"/>
+			</fileset>
+			<fileset dir="${demo.dir}/artifacts">
+				<include name="installpack.zip"/>
+			</fileset>
+		</copy>
+		<mkdir dir="../artifacts/nonextract/org/tp23/antinstaller/runtime/exe"/>
+		<copy todir="../artifacts/nonextract/org/tp23/antinstaller/runtime/exe" overwrite="true">
+			<fileset dir="../installer/">
+				<include name="nonextractor.fconfig"/>
+			</fileset>
+		</copy>
+		
+		
+		<echo message="Building DEMO NON-EXTRACT"/>
+		<installer file="../artifacts/releasenotes.jar" compress="true"
+				   extractType="NonExtractor"
+				   installConfig="../installer/antinstall-config.xml"
+				   buildFile="../installer/build.xml"
+				   antInstallLib="${installDir}/lib"
+				   antLib="${installDir}/antlib"
+				   validateConfig="true"
+				   failOnError="true"
+				   icons="bluecurve">
+				   <fileset dir="${demo.dir}" includes="installpack.zip"/>
+			<fileset dir="${demo.dir}/installclasspath">
+				<include name="resources/*"/>
+			</fileset>
+			<zipfileset src="${installDir}/lib/ant-installer-ext.jar"/>
+		</installer>
+		<jar  file="../artifacts/releasenotes.jar" compress="false" update="true">
+			<fileset dir="../artifacts/nonextract">
+				<include name="**/*"/>
+			</fileset>
+		</jar>
+
+		<!--jar  file="../artifacts/nonextractpack.jar" compress="false">
+			<manifest>
+				<attribute name="Manifest-Version" value="1.0"/>
+				<attribute name="Main-Class" value="org.tp23.antinstaller.selfextract.NonExtractor"/>
+			</manifest>
+			<zipfileset src="${installDir}/lib/ant-installer.jar"/>
+			<zipfileset src="${installDir}/lib/ant-installer-ext.jar"/>
+			<zipfileset src="${installDir}/antlib/ant.jar"/>
+			<zipfileset src="${installDir}/antlib/ant-launcher.jar"/>
+		</jar>
+		<jar  file="../artifacts/nonextractpack.jar" compress="false" update="true">
+			<fileset dir="../artifacts/nonextract">
+				<include name="**/*"/>
+			</fileset>
+		</jar-->
+	</target>
+
+
+<!-- N.B.
+this target does nothing in the deployed version
+and exists for preparing the files to deploy to sourceforge
+-->
+	<target name="sfbuild">
+		<zip  file="./installpack.zip">
+			<zipfileset dir=".">
+				<include name="bin/**/*"/>
+				<include name="classes/**/*"/>
+				<include name="config/**/*"/>
+				<include name="doc/**/*"/>
+				<include name="src/**/*"/>
+				<include name="README.txt"/>
+			</zipfileset>
+		</zip>
+	</target>
+</project>

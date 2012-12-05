@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<!--
+This is a normal Ant build file to build the release for sourceforge
+-->
+<project name="Installation Build"  default="build"  basedir="..">
+
+    <!-- Project properties -->
+    <property name="prepareDir"  value="artifacts/prepare"/>
+	
+    <!-- Classpaths - start -->
+	<!-- Classpaths for compilation - start -->
+    <path id="project.cp">
+        <fileset dir="antlib" includes="ant.jar,ant-launcher.jar"/>
+    </path>
+    <path id="project.ext.cp">
+        <fileset dir="lib">
+			<include name="ant-installer.jar"/>
+        </fileset>
+        <fileset dir="antlib" includes="ant.jar,ant-launcher.jar"/>
+    </path>
+	<!-- Classpaths for compilation - end -->
+
+    <path id="taskdef.cp">
+      <fileset dir="./lib">
+        <include name="ant-installer-ext.jar"/>
+        <include name="ant-installer.jar"/>
+      </fileset>
+    </path>
+    <!-- Classpaths - end -->
+	
+
+    <!-- Task definitions - start -->
+    <!-- AntInstaller installer task definition.
+         Defined within target as it depends upon files that aren't
+         available at the start of a clean build -->
+    <target name="_set-installer-taskdef" unless="installer.taskdef.defined">
+        <taskdef
+            name="installer"
+            classname="org.tp23.antinstaller.taskdefs.Installer"
+            classpathref="taskdef.cp"/>
+        <property name="installer.taskdef.defined" value="true"/>
+    </target>
+    <!-- Task definitions - end -->
+
+
+    <!-- =============================== -->
+    <!-- ==== Public Runnable Targets == -->
+    <!-- =============================== -->
+
+    <target name="clean-build" depends="clean, _build-ai-jars, clean-demo, _build-demo">
+      <!-- this build is pretty much everything other than the installers -->
+    </target>
+
+    <target name="build" depends="_build-ai-jars, _build-demo">
+      <!-- this build should be enough to run the unittests without having to build a release package -->
+    </target>
+
+    <target name="clean" description="Clean out compiled and generated files">
+    	<echo message="*** *** Cleaning artifacts *** *** "/>
+    	<echo message="*** ***"/>
+        <delete dir="${prepareDir}"/>
+    	<delete file="./lib/ant-installer.jar"/>
+    	<delete file="./lib/ant-installer-ext.jar"/>
+    </target>
+
+    <target name="clean-demo" description="Clean out demo files">
+		<ant dir="demo" antfile="build-demo.xml" target="clean">
+			<property name="${installDir}" value="demo"/>
+		</ant>
+    </target>
+
+
+    <!-- =============================== -->
+    <!-- ======= Internal Targets ====== -->
+    <!-- =============================== -->
+
+	<!-- 
+		tests that the following has been run locally
+		This does not need to be run repeatedly but unittests depend on it
+		# ant -buildfile demo/build-demo.xml 
+	-->
+    <target name="_check-demo">
+    	<condition property="installpack.missing">
+    		<not>
+    			<available file="demo/artifacts/installpack.zip" type="file"/>
+    		</not>
+    	</condition>
+    </target>
+	
+    <target name="_build-demo" if="installpack.missing" depends="_check-demo">
+    	<echo message="requires demo build: ${installpack.missing}"/>
+		<ant dir="demo" antfile="build-demo.xml" target="selfextract">
+			<property name="${installDir}" value="demo"/>
+		</ant>
+    </target>
+
+	
+	<target name="_build-ai-jars" depends="_ant-installer.jar, _ant-installer-ext.jar">
+        <!-- AntInstaller JARs are built in ./lib-->
+        <!-- (checked-in) JARs should not be used -->
+    </target>
+
+    <target name="_ant-installer.jar">
+        <echo message="*** *** Building ant-installer.jar *** *** "/>
+    	<echo message="*** ***"/>
+        <echo message="Initing the build directory - ${prepareDir}"/>
+        <mkdir dir="${prepareDir}/classes"/>
+
+        <echo message="*** Building ant-installer.jar ***"/>
+        <mkdir dir="./lib"/>
+        <javac destdir="${prepareDir}/classes" srcdir="src" classpathref="project.cp" debug="true"/>
+        <jar file="./lib/ant-installer.jar" whenempty="fail">
+            <fileset dir="./src/resources">
+                <include name="LICENSE-ant-install.txt"/>
+            </fileset>
+            <fileset dir="${prepareDir}/classes"/>
+            <fileset dir="./src">
+                <include name="**/*.dtd"/>
+                <include name="**/*.properties"/>
+                <include name="**/*.fconfig"/>
+                <include name="resources/extract-image.png"/>
+                <include name="resources/gkmain_inv.png"/>
+                <include name="resources/antbar.png"/>
+            </fileset>
+            <manifest>
+                <attribute name="AntInstaller-Version" value="${ant.install.version}"/>
+            </manifest>
+        </jar>
+    </target>
+
+	<target name="_ant-installer-ext.jar">
+		<echo message="*** *** Building ant-installer-ext.jar *** *** "/>
+    	<echo message="*** ***"/>
+        <mkdir dir="${prepareDir}/classes_ext"/>
+        <javac destdir="${prepareDir}/classes_ext" srcdir="src_ext" classpathref="project.ext.cp" debug="true"/>
+		<jar file="./lib/ant-installer-ext.jar" whenempty="fail">
+            <fileset dir="./src/resources">
+                <include name="LICENSE-ant-install.txt"/>
+            </fileset>
+            <fileset dir="${prepareDir}/classes_ext"/>
+            <manifest>
+                <attribute name="AntInstaller-Version" value="${ant.install.version}"/>
+            </manifest>
+        </jar>
+    </target>	
+	
+</project>

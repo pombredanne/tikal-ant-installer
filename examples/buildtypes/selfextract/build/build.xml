@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+
+This Ant script is used to package parts of the demo app to create an installer
+
+the selfextract target shows an example of creating a self extracting jar for the demo app
+
+run with ...
+
+ant -buildfile build-demo.xml
+
+-->
+<project name="Create Demo Installer Zip Build"  default="selfextract"  basedir=".">
+
+    <!-- Default location in installed tree -->
+    <property name="installDir" location="../../../.."/>
+
+    <path id="taskdef.cp">
+        <fileset dir="${installDir}/lib">
+			<include name="ant-installer-ext.jar"/>
+            <include name="ant-installer.jar"/>
+        </fileset>
+	</path>
+
+	<taskdef
+		name="installer" 
+		classname="org.tp23.antinstaller.taskdefs.Installer"
+		classpathref="taskdef.cp"/>
+  
+	<property name="demo.dir" value="${installDir}/demo"/>
+
+	<target name="selfextract">
+		<mkdir dir="../artifacts/selfextract"/>
+		<echo message="Building DEMO SELFEXTRACT"/>
+		
+		<installer file="../artifacts/selfextractpack.jar" compress="true"
+				extractType="SelfExtractor"
+				installConfig="../installer/antinstall-config.xml"
+				buildFile="../installer/build.xml"
+				antInstallLib="${installDir}/lib"
+				antLib="${installDir}/antlib"
+				validateConfig="true"
+				failOnError="true"
+				icons="bluecurve">
+			<fileset dir="${demo.dir}/artifacts">
+				<include name="installpack.zip"/>
+			</fileset>
+			<fileset dir="${demo.dir}/installclasspath">
+				<include name="resources/*"/>
+			</fileset>
+		</installer>
+		
+	</target>
+
+</project>
