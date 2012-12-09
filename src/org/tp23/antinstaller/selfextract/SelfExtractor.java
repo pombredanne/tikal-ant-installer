@@ -338,6 +338,7 @@ public class SelfExtractor {
 	 *@param  args  The command line arguments
 	 */
 	public static void main(String[] args) {
+		int _exitcode = 0;
 		testX();
 		// FIXME move after parseArgs() and set graphicsEnv if text selected
 		// will need to test SelfExtractor and comment parseArgs() to ensure
@@ -370,9 +371,11 @@ public class SelfExtractor {
             installExec.exec();
 		}
 		catch (InstallException e1) {
+			_exitcode = 99;
 			System.out.println("Cant load filter chain:/org/tp23/antinstaller/runtime/exe/selfextractor.fconfig");
 			e1.printStackTrace();
 		}
+		System.exit(_exitcode);
 	}
 
 	/**

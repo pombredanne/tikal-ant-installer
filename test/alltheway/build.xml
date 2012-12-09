@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<project name="test alltheway"  default="test"  basedir="${basedir}">
+
+	<!-- this is required to pick up the properties generated during the install pages -->
+	<property file="${basedir}/ant.install.properties"/>
+	<property name="test.taskname" value="test alltheway"/>
+
+<!-- Main entry point  -->	
+	<target name="test">
+	    <echo message="[start] test all-the-way"/>
+	    <copy file="build.xml" tofile="build2.xml"/>
+		<replaceregexp file="build2.xml" match="&lt;target name=&quot;.*&quot;&gt;" replace="&lt;target name=&quot;new-text&quot;&gt;" byline="true"/>
+	    <echo message="[end] test all-the-way"/>
+	</target>
+	
+</project>

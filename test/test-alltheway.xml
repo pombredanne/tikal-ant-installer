@@ -1,0 +1,65 @@
+<project name="test-AllTheWay" default="test:AllTheWay">
+    
+    <property name="test-task-name" value="test-AllTheWay"/>
+	<property name="AntInstaller.home" value=".."/>
+	
+	<path id="taskdef.cp">
+		<fileset dir="${AntInstaller.home}/lib">
+			<include name="ant-installer-ext.jar"/>
+			<include name="ant-installer.jar"/>
+		</fileset>
+	</path>
+
+	<taskdef name="installer" classname="org.tp23.antinstaller.taskdefs.Installer" classpathref="taskdef.cp"/>
+    
+    <target name="test:AllTheWay">
+        <echo taskname="${test-task-name}" message="========================================"/>
+        <echo taskname="${test-task-name}" message="[start] Test all-the-way"/>
+        <echo taskname="${test-task-name}" message="========================================"/>
+        <antcall target="test:AllTheWay:tikal-ant-installer:build"/>
+        <antcall target="test:AllTheWay:build-installer"/>
+        <antcall target="test:AllTheWay:run-installer"/>
+        <echo taskname="${test-task-name}" message="========================================"/>
+        <echo taskname="${test-task-name}" message="[end] Test all-the-way"/>
+        <echo taskname="${test-task-name}" message="========================================"/>
+        </target>
+
+    <target name="test:AllTheWay:tikal-ant-installer:build">
+        <echo taskname="${test-task-name}" message="[start] Build tikal-ant-installer"/>
+        <ant antfile="build/build.xml" dir=".." inheritAll="false" inheritRefs="false"/>
+        <echo taskname="${test-task-name}" message="[end] Build tikal-ant-installer"/>
+    </target>
+
+    <target name="test:AllTheWay:build-installer">
+        <echo taskname="${test-task-name}" message="[start] Build installer"/>
+        <delete taskname="${test-task-name}" dir="output"/>
+        <mkdir taskname="${test-task-name}" dir="output"/>
+        <installer taskname="${test-task-name}"
+			file="output/test-alltheway.jar" 
+			compress="true"
+			extractType="SelfExtractor"
+			installConfig="alltheway/antinstall-config.xml"
+			buildFile="alltheway/build.xml"
+			antInstallLib="${AntInstaller.home}/lib"
+			antLib="${AntInstaller.home}/antlib"
+			validateConfig="true"
+			failOnError="true"
+			icons="eclipse">
+				<fileset dir="${basedir}/alltheway" includes="*.png"/>
+		</installer>
+       <echo taskname="${test-task-name}" message="[end] Build installer"/>
+    </target>
+        		
+
+    <target name="test:AllTheWay:run-installer">
+        <echo taskname="${test-task-name}" message="[start] Run installer"/>
+       <java taskname="${test-task-name}" failonerror="true" fork="true" classname="org.tp23.antinstaller.selfextract.SelfExtractor">
+         <arg value="text-auto"/>
+         <classpath>
+           <pathelement location="output/test-alltheway.jar"/>
+         </classpath>
+       </java>
+       <echo taskname="${test-task-name}" message="[end] Run installer"/>
+    </target>
+
+</project>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE installer PUBLIC "-//tp23 //DTD Ant Installer Config//EN" "http://antinstaller.sf.net/dtd/antinstall-config-0.7.dtd">
+<installer
+			ui="swing,text,text-auto"
+			verbose="false"
+			lookAndFeel="jgoodies"
+			name="test alltheway"
+			windowIcon="/AntInstaller.png"
+			defaultImageResource="/banner23.png"
+			loadDefaults="true"
+			finishButtonText="Test"
+			minJavaVersion="1.4">
+
+    <page
+			type="progress"
+			name="progress"
+			showTargets="true"
+			target="test">
+	</page>
+</installer>
+
+
