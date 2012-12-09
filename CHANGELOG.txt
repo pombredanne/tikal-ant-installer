@@ -1,6 +1,22 @@
-CHANGELOG
+========================================
+tikal-ant-installer CHANGELOG
+========================================
+version 1.0
+-----------
+- Upgrade to ANT 1.8.4
+- Fix: exit with exit-code 0 on text and text-auto modes of the self-extracted installer
+- add add new attribute to the <installer> task: canMaximize - enable the window maximized button
+- make the tikal-ant-installer an eclipse project
+- add 'test' folder to the project
+- add 'all-the-way' test to the project - runs the tikal-ant-installer build, build a test installer and runs it in a text-auto mode (also include a ANT 1.8 task in it).
 
 
+
+
+
+
+========================================
+AntInstaller CHANGELOG
 ========================================
 version 0.2
 Fixed a bug with the ordering of targets.
