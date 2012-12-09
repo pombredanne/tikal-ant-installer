@@ -55,6 +55,7 @@ public class Installer {
 	private String minJavaVersion = "1.4";
 	private String ui;// permitted UI override values
 	private boolean verbose;
+	private boolean canMaximize;
 	private boolean debug;
 	private String lookAndFeel;
 	private String wide;
@@ -131,6 +132,16 @@ public class Installer {
 	}
 	public void setVerbose(String strVerbose) {
 		this.verbose = OutputField.isTrue(strVerbose);
+	}
+
+	public boolean canMaximize() {
+		return canMaximize;
+	}
+	public void setCanMaximize(boolean canMaximize) {
+		this.canMaximize = canMaximize;
+	}
+	public void setCanMaximize(String strCanMaximize) {
+		this.canMaximize = OutputField.isTrue(strCanMaximize);
 	}
 
 	public boolean isDebug() {

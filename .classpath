@@ -3,5 +3,35 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="src_ext"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="antlib/ant-antlr.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-apache-bcel.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-apache-bsf.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-apache-log4j.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-apache-oro.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-apache-regexp.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-apache-resolver.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-apache-xalan2.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-commons-logging.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-commons-net.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-jai.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-javamail.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-jdepend.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-jmf.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-jsch.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-junit.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-junit4.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-launcher.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-netrexx.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-nodeps.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-starteam.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-stylebook.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-swing.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-testutil.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-trax.jar"/>
+	<classpathentry kind="lib" path="antlib/ant-weblogic.jar"/>
+	<classpathentry kind="lib" path="antlib/ant.jar"/>
+	<classpathentry kind="lib" path="antlib/junit-3.8.jar"/>
+	<classpathentry kind="lib" path="antlib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="antlib/xml-apis.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
